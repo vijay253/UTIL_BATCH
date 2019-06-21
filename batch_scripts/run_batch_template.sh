@@ -1,7 +1,6 @@
 #! /bin/bash                                                                                                                                                                                                      
 
-##### A batch submission script by Richard, insert the required script you want to batch run on line 53                                                                                 
-##### Modify required resources as needed! See comments, leave CPU as 1!
+##### A batch submission script based on an earlier version by Richard
 
 echo "Running as ${USER}"
 
@@ -12,12 +11,11 @@ historyfile=hist.$( date "+%Y-%m-%d_%H-%M-%S" ).log
 batch="${USER}_Job.txt"
 
 ##Input run numbers##                                                                      
-##Point this to the location of your input run list, see templates folder for examples ##                                                                                                                       
+##Point this to the location of your input run list                                            
 inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/batch_scripts/inputRuns"
 
-## Tape stub                                                                                                                                                                                                      
+## Tape stub, you can point directly to a taped file and the farm job will do the jgetting for you, don't call it in your script!                                                      
 MSSstub='/mss/hallc/spring17/raw/coin_all_%05d.dat'
-
 auger="augerID.tmp"
 
 while true; do
@@ -26,7 +24,7 @@ while true; do
         [Yy]* )
             i=-1
             (
-            ##Reads in input file##                                                                                                                                                                                
+            ##Reads in input file##                                                       
             while IFS='' read -r line || [[ -n "$line" ]]; do
                 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 echo "Run number read from file: $line"
@@ -63,14 +61,14 @@ while true; do
                 echo "CPU: 1" >> ${batch} ### hcana is single core, setting CPU higher will lower priority and gain you nothing!
 		echo "INPUT_FILES: ${tape_file}" >> ${batch}
                 echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/SCRIPT.sh${runNum}" >> ${batch} ### Insert your script at end!                                            
-                echo "MAIL: ${USER}@jlab.org" >> ${batch} ## Consider commenting out for large runs unless you enjoy 1k email spam
+                echo "MAIL: ${USER}@jlab.org" >> ${batch}
                 echo "Submitting batch"
                 eval "jsub ${batch} 2>/dev/null"
                 echo " "
                 i=$(( $i + 1 ))
                 string=$(cat ${inputFile} |tr "\n" " ")
-                ##Converts input file to an array##                                                                                                                                                               
-                rnum=($string)                                                                                                                                                                      
+                ##Converts input file to an array##
+                rnum=($string)                                  
                 eval "jobstat -u ${USER} 2>/dev/null" > ${tmp}
                 ##Loop to find ID number of each run number##   
 		for j in "${rnum[@]}"

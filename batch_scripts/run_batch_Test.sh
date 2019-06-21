@@ -1,7 +1,6 @@
 #! /bin/bash                                                                                                                                                                                                      
 
-##### A batch submission script by Richard, insert the required script you want to batch run on line 51                                                                                                           
-##### Modify required resources as needed!                                                                                                                                   
+##### A batch submission script by Richard                                                                     
 
 echo "Running as ${USER}"
 
