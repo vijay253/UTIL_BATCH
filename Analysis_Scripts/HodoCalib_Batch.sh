@@ -31,7 +31,6 @@ if [[ ${USER} = "cdaq" ]]; then
     exit 2
 fi       
      
-
 # Set path depending upon hostname. Change or add more as needed  
 if [[ "${HOSTNAME}" = *"farm"* ]]; then  
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
@@ -125,10 +124,21 @@ if [ "$RUNNUMBER" -ge "5335" -a "$RUNNUMBER" -le "7045" ]; then
     fi
 fi
 
-if [ "$RUNNUMBER" -ge "7046" ]; then
+if [ "$RUNNUMBER" -ge "7046" -a "$RUNNUMBER" -le "8375" ]; then
     cp "$REPLAYPATH/DBASE/COIN/standard.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
     cp "$REPLAYPATH/DBASE/COIN/OnlineSpring19.param" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/general_$RUNNUMBER.param"
     sed -i "13 s/OnlineSpring19.param/"$OPT"_HodoCalib\/general_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
+    if [[ $OPT == "HMS" ]]; then
+	sed -i "40 s/hhodo_TWcalib_Spring19.param/hhodo_TWcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param 
+    elif [[ $OPT == "SHMS" ]]; then
+	sed -i "74 s/phodo_TWcalib_Spring19.param/phodo_TWcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/SHMS_HodoCalib/general_$RUNNUMBER.param
+    fi
+fi
+
+if [ "$RUNNUMBER" -ge "8376"]; then
+    cp "$REPLAYPATH/DBASE/COIN/standard.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
+    cp "$REPLAYPATH/DBASE/COIN/OnlineSummer19.param" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/general_$RUNNUMBER.param"
+    sed -i "13 s/OnlineSummer19.param/"$OPT"_HodoCalib\/general_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
     if [[ $OPT == "HMS" ]]; then
 	sed -i "40 s/hhodo_TWcalib_Spring19.param/hhodo_TWcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param 
     elif [[ $OPT == "SHMS" ]]; then
@@ -180,7 +190,10 @@ if [[ $OPT == "HMS" ]]; then
     if [ "$RUNNUMBER" -ge "5335" -a "$RUNNUMBER" -le "7045" ]; then
 	sed -i "41 s/hhodo_Vpcalib_Winter18.param/Calibration\/hhodo_Vpcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param
     fi
-    if [ "$RUNNUMBER" -ge "7046" ]; then
+    if [ "$RUNNUMBER" -ge "7046" -a "$RUNNUMBER" -le "8375" ]; then
+	sed -i "41 s/hhodo_Vpcalib_Spring19.param/Calibration\/hhodo_Vpcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param
+    fi
+    if [ "$RUNNUMBER" -ge "8376"]; then
 	sed -i "41 s/hhodo_Vpcalib_Spring19.param/Calibration\/hhodo_Vpcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param
     fi
 elif [[ $OPT == "SHMS" ]]; then
@@ -191,7 +204,10 @@ elif [[ $OPT == "SHMS" ]]; then
     if [ "$RUNNUMBER" -ge "5335" -a "$RUNNUMBER" -le "7045" ]; then
 	sed -i "75 s/hhodo_Vpcalib_Winter18.param/Calibration\/hhodo_Vpcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param
     fi
-    if [ "$RUNNUMBER" -ge "7046" ]; then
+    if [ "$RUNNUMBER" -ge "7046" -a "$RUNNUMBER" -le "8375" ]; then
+	sed -i "75 s/hhodo_Vpcalib_Spring19.param/Calibration\/hhodo_Vpcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param
+    fi
+    if [ "$RUNNUMBER" -ge "8376" ]; then
 	sed -i "75 s/hhodo_Vpcalib_Spring19.param/Calibration\/hhodo_Vpcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param
     fi    
 fi

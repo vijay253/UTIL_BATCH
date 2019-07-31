@@ -125,10 +125,27 @@ fi
 ### For run numbers 7046 onwards, we use the run period 3 files as a base
 ### Copy these files to a new directory and rename them
 ### Replace info in lines 13, 37 and 38 with the path to our new files via sed commands
-if [ "$RUNNUMBER" -ge "7046" ]; then 
+if [ "$RUNNUMBER" -ge "7046" -a "$RUNNUMBER" -le "8375" ]; then 
     cp "$REPLAYPATH/DBASE/COIN/standard.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_DCCalib/standard_$RUNNUMBER.database"
     cp "$REPLAYPATH/DBASE/COIN/OnlineSpring19.param" "$REPLAYPATH/DBASE/COIN/"$OPT"_DCCalib/general_$RUNNUMBER.param"
     sed -i "13 s/OnlineSpring19.param/"$OPT"_DCCalib\/general_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_DCCalib/standard_"$RUNNUMBER".database"
+    if [[ $OPT == "HMS" ]];then
+	sed -i "37 s/hdc_calib_Spring19.param/CALIB\/hdc_calib_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_DCCalib/general_"$RUNNUMBER".param"
+	sed -i "38 s/hdc_tzero_per_wire_Spring19.param/CALIB\/hdc_tzero_per_wire_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_DCCalib/general_"$RUNNUMBER".param"
+    fi
+    if [[ $OPT == "SHMS" ]]; then
+	sed -i "71 s/pdc_calib_Spring19.param/CALIB\/pdc_calib_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_DCCalib/general_"$RUNNUMBER".param"
+	sed -i "72 s/pdc_tzero_per_wire_Spring19.param/CALIB\/pdc_tzero_per_wire_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_DCCalib/general_"$RUNNUMBER".param"
+    fi
+fi
+
+### For run numbers 8376 onwards, we use the run period 4 (PionLT start) files as a base
+### Copy these files to a new directory and rename them
+### Replace info in lines 13, 37 and 38 with the path to our new files via sed commands
+if [ "$RUNNUMBER" -ge "8376"]; then 
+    cp "$REPLAYPATH/DBASE/COIN/standard.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_DCCalib/standard_$RUNNUMBER.database"
+    cp "$REPLAYPATH/DBASE/COIN/OnlineSummer19.param" "$REPLAYPATH/DBASE/COIN/"$OPT"_DCCalib/general_$RUNNUMBER.param"
+    sed -i "13 s/OnlineSummer.param/"$OPT"_DCCalib\/general_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_DCCalib/standard_"$RUNNUMBER".database"
     if [[ $OPT == "HMS" ]];then
 	sed -i "37 s/hdc_calib_Spring19.param/CALIB\/hdc_calib_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_DCCalib/general_"$RUNNUMBER".param"
 	sed -i "38 s/hdc_tzero_per_wire_Spring19.param/CALIB\/hdc_tzero_per_wire_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_DCCalib/general_"$RUNNUMBER".param"

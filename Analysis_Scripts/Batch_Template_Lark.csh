@@ -13,8 +13,8 @@ if ( $1 ==  "" ) then
     else
 
     #Initialize hcana
-    cd "/home/apps/hallC_analyzer/hcana"
-    source "/home/apps/hallC_analyzer/hcana/setup.csh"
+    cd "/home/apps/hcana"
+    source "/home/apps/hcana/setup.csh"
     cd "/home/${USER}/work/JLab/hallc_replay_lt"
     source "/home/${USER}/work/JLab/hallc_replay_lt/setup.csh"
 
