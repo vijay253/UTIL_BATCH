@@ -114,9 +114,9 @@ if [ "$RUNNUMBER" -le "5334" ]; then
     # Use sed to replace the strings, 3 means line 3, note for sed to work with a variable we need to use "", \ is an ignore character which we need to get the \ in there syntax "Line# s/TEXT TO REPLACE/REPLACEMENT/" FILE
     sed -i "3 s/OnlineAutumn18.param/"$OPT"_HodoCalib\/general_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
     if [[ $OPT == "HMS" ]]; then
-	sed -i "40 s/hhodo_TWcalibAutumn18.param/hhodo_TWcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param 
+	sed -i "40 s/hhodo_TWcalib_Autumn18.param/hhodo_TWcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param 
     elif [[ $OPT == "SHMS" ]]; then
-	sed -i "74 s/phodo_TWcalibAutumn18.param/phodo_TWcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/SHMS_HodoCalib/general_$RUNNUMBER.param
+	sed -i "74 s/phodo_TWcalib_Autumn18.param/phodo_TWcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/SHMS_HodoCalib/general_$RUNNUMBER.param
     fi
 fi
 
