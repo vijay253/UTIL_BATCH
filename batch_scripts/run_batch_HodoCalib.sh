@@ -27,7 +27,7 @@ batch="${USER}_Job.txt"
 
 ##Input run numbers##                                                                                                                                                                                             
 inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/Carbon_ALL" 
-#inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/Lumi_ALL"
+#inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/TestRun5158"
 
 ## Tape stub                                                                                                                                                                                                      
 MSSstub='/mss/hallc/spring17/raw/coin_all_%05d.dat'

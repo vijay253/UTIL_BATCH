@@ -79,11 +79,9 @@ fi
 
 ### Run the first replay script, then, run the calibration macro
 eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/"$OPT"/PRODUCTION/"$OPT"DC_Calib_Coin_Pt1.C($RUNNUMBER,$MAXEVENTS)\""
-sleep 30
 ROOTFILE="$REPLAYPATH/ROOTfilesDCCalib/"$OPT"_DC_Calib_Pt1_"$RUNNUMBER"_"$MAXEVENTS".root" 
 cd "$REPLAYPATH/CALIBRATION/dc_calib/scripts"
 root -l -b -q "$REPLAYPATH/CALIBRATION/dc_calib/scripts/main_calib.C(\"$OPT\", \"$ROOTFILE\", $RUNNUMBER)"
-sleep 15
 
 ### Loop checks if the new parameter files exist, returns an error if they don't
 if [[ ! -f "$REPLAYPATH/CALIBRATION/dc_calib/scripts/"$OPT"_DC_cardLog_"$RUNNUMBER"/"$specL"dc_calib_"$RUNNUMBER$".param" && ! -f  "$REPLAYPATH/CALIBRATION/dc_calib/scripts/"$OPT"_DC_cardLog_"$RUNNUMBER"/"$specL"dc_tzero\
@@ -149,7 +147,7 @@ fi
 ### For run numbers 8376 onwards, we use the run period 4 (PionLT start) files as a base
 ### Copy these files to a new directory and rename them
 ### Replace info in lines 13, 37 and 38 with the path to our new files via sed commands
-if [ "$RUNNUMBER" -ge "8376"]; then 
+if [ "$RUNNUMBER" -ge "8376" ]; then 
     cp "$REPLAYPATH/DBASE/COIN/standard.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_DCCalib/standard_$RUNNUMBER.database"
     cp "$REPLAYPATH/DBASE/COIN/OnlineSummer19.param" "$REPLAYPATH/DBASE/COIN/"$OPT"_DCCalib/general_$RUNNUMBER.param"
     sed -i "13 s/OnlineSummer.param/"$OPT"_DCCalib\/general_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_DCCalib/standard_"$RUNNUMBER".database"
@@ -163,8 +161,10 @@ if [ "$RUNNUMBER" -ge "8376"]; then
     fi
 fi
 
-sleep 10
 ### Finally, replay again with our new parameter files
 cd $REPLAYPATH
 eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/"$OPT"/PRODUCTION/"$OPT"DC_Calib_Coin_Pt2.C($RUNNUMBER,$MAXEVENTS)\""
+cd "$REPLAYPATH/CALIBRATION/dc_calib/Calibration_Checker/"
+root -l -b -q "$REPLAYPATH/CALIBRATION/dc_calib/Calibration_Checker/run_DC_Calib_Check.C ($RUNNUMBER, $MAXEVENTS, \"$OPT\")"
+
 exit 0
