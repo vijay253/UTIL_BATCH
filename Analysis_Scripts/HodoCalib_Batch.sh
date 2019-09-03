@@ -81,7 +81,6 @@ if [ ! -d "$REPLAYPATH/CALIBRATION/shms_hodo_calib/Calibration_Plots" ]; then
 fi
 
 eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/"$OPT"/PRODUCTION/"$OPT"Hodo_Calib_Coin_Pt1.C($RUNNUMBER,$MAXEVENTS)\""
-sleep 30
 ROOTFILE="$REPLAYPATH/ROOTfilesHodoCalib/"$OPT"_Hodo_Calib_Pt1_"$RUNNUMBER"_"$MAXEVENTS".root" 
 
 if [[ $OPT == "HMS" ]]; then
@@ -93,11 +92,8 @@ elif [[ $OPT == "SHMS" ]]; then
 fi
 
 cd "$REPLAYPATH/CALIBRATION/"$spec"_hodo_calib/"
-sleep 30
 root -l -q -b "$REPLAYPATH/CALIBRATION/"$spec"_hodo_calib/timeWalkHistos.C(\"$ROOTFILE\", $RUNNUMBER, \"$spec\")"
-sleep 60
 root -l -q -b "$REPLAYPATH/CALIBRATION/"$spec"_hodo_calib/timeWalkCalib.C($RUNNUMBER)"
-sleep 30
 
 # After executing first two root scripts, should have a new .param file so long as scripts ran ok, IF NOT THEN EXIT
 if [ ! -f "$REPLAYPATH/PARAM/"$OPT"/HODO/"$specL"hodo_TWcalib_$RUNNUMBER.param" ]; then
@@ -142,7 +138,7 @@ if [ "$RUNNUMBER" -ge "7046" -a "$RUNNUMBER" -le "8375" ]; then
     fi
 fi
 
-if [ "$RUNNUMBER" -ge "8376"]; then
+if [ "$RUNNUMBER" -ge "8376" ]; then
     cp "$REPLAYPATH/DBASE/COIN/standard.database" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
     cp "$REPLAYPATH/DBASE/COIN/OnlineSummer19.param" "$REPLAYPATH/DBASE/COIN/"$OPT"_HodoCalib/general_$RUNNUMBER.param"
     sed -i "13 s/OnlineSummer19.param/"$OPT"_HodoCalib\/general_$RUNNUMBER.param/" $REPLAYPATH"/DBASE/COIN/"$OPT"_HodoCalib/standard_$RUNNUMBER.database"
@@ -156,9 +152,7 @@ fi
 # Back to the main directory
 cd "$REPLAYPATH"                                
 # Off we go again replaying
-sleep 30
 eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/"$OPT"/PRODUCTION/"$OPT"Hodo_Calib_Coin_Pt2.C($RUNNUMBER,$MAXEVENTS)\""
-sleep 30
 # Clean up the directories of our generated files
 mv "$REPLAYPATH/PARAM/"$OPT"/HODO/"$specL"hodo_TWcalib_$RUNNUMBER.param" "$REPLAYPATH/PARAM/"$OPT"/HODO/Calibration/"$specL"hodo_TWcalib_$RUNNUMBER.param"
 mv "$REPLAYPATH/CALIBRATION/"$spec"_hodo_calib/timeWalkHistos_"$RUNNUMBER".root" "$REPLAYPATH/CALIBRATION/"$spec"_hodo_calib/Calibration_Plots/timeWalkHistos_"$RUNNUMBER".root"
@@ -167,9 +161,7 @@ cd "$REPLAYPATH/CALIBRATION/"$spec"_hodo_calib/"
 # Define the path to the second replay root file
 ROOTFILE2="$REPLAYPATH/ROOTfilesHodoCalib/"$OPT"_Hodo_Calib_Pt2_"$RUNNUMBER"_"$MAXEVENTS".root"
 # Execute final script
-sleep 30
 root -l -q -b "$REPLAYPATH/CALIBRATION/"$spec"_hodo_calib/fitHodoCalib.C(\"$ROOTFILE2\", $RUNNUMBER)" 
-sleep 30
 # Check our new file exists, if not exit, if yes, move it
 if [ ! -f "$REPLAYPATH/PARAM/"$OPT"/HODO/"$specL"hodo_Vpcalib_$RUNNUMBER.param" ]; then
     echo ""$specL"hodo_Vpcalib_$RUNNUMBER.param not found, calibration script likely failed"
@@ -200,7 +192,7 @@ if [[ $OPT == "HMS" ]]; then
     if [ "$RUNNUMBER" -ge "7046" -a "$RUNNUMBER" -le "8375" ]; then
 	sed -i "41 s/hhodo_Vpcalib_Spring19.param/Calibration\/hhodo_Vpcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param
     fi
-    if [ "$RUNNUMBER" -ge "8376"]; then
+    if [ "$RUNNUMBER" -ge "8376" ]; then
 	sed -i "41 s/hhodo_Vpcalib_Spring19.param/Calibration\/hhodo_Vpcalib_$RUNNUMBER.param/" $REPLAYPATH/DBASE/COIN/HMS_HodoCalib/general_$RUNNUMBER.param
     fi
 elif [[ $OPT == "SHMS" ]]; then
@@ -219,8 +211,6 @@ elif [[ $OPT == "SHMS" ]]; then
     fi    
 fi
 
-sleep 30
 cd "$REPLAYPATH"
 eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/"$OPT"/PRODUCTION/"$OPT"Hodo_Calib_Coin_Pt3.C($RUNNUMBER,$MAXEVENTS)\""
-sleep 30
 exit 0
