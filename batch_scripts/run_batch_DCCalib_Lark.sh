@@ -6,6 +6,20 @@
 
 echo "Running as ${USER}" # Checks who you're running this as'
 
+SPEC=$1
+
+### Check you have provided the first argument correctly                                                                                                                                                         
+if [[ ! $1 =~ ^("HMS"|"SHMS")$ ]]; then
+    echo "Please specify spectrometer, HMS or SHMS"
+    exit 2
+fi
+### Check if a second argument was provided, if not assume -1, if yes, this is max events                                                                                                                         
+if [[ $2 -eq "" ]]; then
+    MAXEVENTS=-1
+else
+    MAXEVENTS=$2
+fi
+
 ##Output history file##                                                                                                                                                                                           
 historyfile=hist.$( date "+%Y-%m-%d_%H-%M-%S" ).log # Creates a log file
 
@@ -38,7 +52,7 @@ while true; do
                 cp /dev/null ${batch}
                 ##Creation of batch script for submission##                                    
                 echo "#!/bin/csh" >> ${batch} # Tells your job which shell to run in
-		echo "#PBS -N KaonLT_${runNum}" >> ${batch} # Name your job                                                                           
+		echo "#PBS -N DCCalib_${SPEC}_${runNum}" >> ${batch} # Name your job                                                                           
 		echo "#PBS -m abe" >> ${batch} # Email you on job start, end or error
 		echo "#PBS -M ${USER}@jlab.org" >>${batch} # Your email address, change it to be what you like
 		echo "#PBS -r n" >> ${batch} # Don't re-run if it crashes
@@ -46,7 +60,7 @@ while true; do
 		echo "#PBS -e  /home/${USER}/trq_output/${runNum}.err" >> ${batch} # Error output directory and file name
 		echo "date" >> ${batch} 
 		echo "cd /home/${USER}/work/JLab/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts" >> ${batch} # Tell your job to go to the directory with the script you want to run
-		echo "./Full_KaonLT_Lark.csh ${runNum}" >> ${batch} # Run your script, change this to what you like
+		echo "./DCCalib_Batch.sh ${runNum} ${SPEC}" >> ${batch} # Run your script, change this to what you like
 		echo "date">>${batch}
 		echo "exit">>${batch} # End of your job script
 		echo "Submitting batch"
