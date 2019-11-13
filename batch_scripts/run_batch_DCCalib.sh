@@ -1,59 +1,49 @@
-#! /bin/bash                                                                                                                                                                                                      
-
-##### A batch submission script by Richard, insert the required script you want to batch run on line 51                                                                                                           
-##### Modify required resources as needed!                                                                                                                                   
-
+#! /bin/bash
+##### A batch submission script by Richard, insert the required script you want to batch run on line 51
+##### Modify required resources as needed!
 echo "Running as ${USER}"
-
 SPEC=$1
-
-### Check you have provided the first argument correctly                                                                                                                                                         
+### Check you have provided the first argument correctly                                                            
 if [[ ! $1 =~ ^("HMS"|"SHMS")$ ]]; then
     echo "Please specify spectrometer, HMS or SHMS"
     exit 2
 fi
-### Check if a second argument was provided, if not assume -1, if yes, this is max events                                                                                                                         
+### Check if a second argument was provided, if not assume -1, if yes, this is max events
 if [[ $2 -eq "" ]]; then
     MAXEVENTS=-1
 else
     MAXEVENTS=$2
 fi
-
-##Output history file##                                                                                                                                                                                           
+##Output history file##                                                                                          
 historyfile=hist.$( date "+%Y-%m-%d_%H-%M-%S" ).log
-
-##Output batch script##                                                                                                                                                                                           
+##Output batch script##                                         
 batch="${USER}_Job.txt"
-
 ##Input run numbers##
 inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/Carbon_ALL"
-
 ## Tape stub
 MSSstub='/mss/hallc/spring17/raw/coin_all_%05d.dat'
-
 auger="augerID.tmp"
-
 while true; do
     read -p "Do you wish to begin a new batch submission? (Please answer yes or no) " yn
     case $yn in
         [Yy]* )
             i=-1
             (
-            ##Reads in input file##                                                                                                                                                                               
+            ##Reads in input file##                                                                         
             while IFS='' read -r line || [[ -n "$line" ]]; do
                 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
                 echo "Run number read from file: $line"
                 echo ""
-                ##Run number#                                                                                                                                                                                     
+                ##Run number#                                                         
                 runNum=$line
                 tape_file=`printf $MSSstub $runNum`
                 tmp=tmp
-                ##Finds number of lines of input file##                                                                                                                                                           
+                ##Finds number of lines of input file##                                                               
                 numlines=$(eval "wc -l < ${inputFile}")
                 echo "Job $(( $i + 2 ))/$(( $numlines +1 ))"
                 echo "Running ${batch} for ${runNum}"
                 cp /dev/null ${batch}
-                ##Creation of batch script for submission##                                                                                                                                                       
+                ##Creation of batch script for submission##                                     
                 echo "PROJECT: c-kaonlt" >> ${batch}
 		echo "TRACK: analysis" >> ${batch}
 		#echo "TRACK: debug" >> ${batch}
@@ -70,8 +60,8 @@ while true; do
                 echo " "
                 i=$(( $i + 1 ))
                 string=$(cat ${inputFile} |tr "\n" " ")
-                ##Converts input file to an array##                                                                                                                                                               
-                rnum=($string)                                                                                                                                                                      
+                ##Converts input file to an array##                                 
+                rnum=($string)                           
                 eval "jobstat -u ${USER} 2>/dev/null" > ${tmp}
                 ##Loop to find ID number of each run number##   
 		for j in "${rnum[@]}"

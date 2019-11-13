@@ -1,11 +1,10 @@
 #! /bin/bash                                                                                                                                                                                                      
-
-##### A batch submission script by Richard, insert the required script you want to batch run on line 51                                                                                                           
-##### Modify required resources as needed!                                                                                                                                   
-
+### Stephen Kay --- University of Regina --- 12/11/19 ###
+##### A batch submission script by Richard, insert the required script you want to batch run on line 51
+##### Modify required resources as needed!
 echo "Running as ${USER}"
-
-##Output history file##                                                                                                                                                                                           
+##Output history file##  
+                                                                                                                                                                                         
 historyfile=hist.$( date "+%Y-%m-%d_%H-%M-%S" ).log
 
 ##Output batch script##                                                                                                                                                                                           

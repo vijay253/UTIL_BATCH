@@ -1,5 +1,6 @@
 #!/bin/bash
 
+### Stephen Kay --- University of Regina --- 12/11/19 ###
 ### Script for running (via batch or otherwise) the DC calibration, this one script does all of the relevant steps for the calibration process
 ### REQUIRES two arguments, runnumber and spectrometer (HMS or SHMS, the caps are important!)
 ### If you want to run with LESS than all of the events, provide a third argument with # events

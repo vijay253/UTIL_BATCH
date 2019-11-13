@@ -1,5 +1,6 @@
 #!/bin/bash
 
+### Stephen Kay --- University of Regina --- 12/11/19 ###
 ### Template for a batch running script from Richard, modify with your username and with the script you want to run on the final eval line
 ### If you encounter errors, try commenting/uncommenting L17 (export OS...)
 

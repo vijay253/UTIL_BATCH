@@ -1,5 +1,6 @@
 #!/bin/bash
 
+### Stephen Kay --- University of Regina --- 12/11/19 ###
 ### Script for running (via batch or otherwise) the hodoscope calibration, this one script does all of the relevant steps for the calibration proces
 ### Note that the second part also has an additional bit where it checks for a database file based upon the run number
 
