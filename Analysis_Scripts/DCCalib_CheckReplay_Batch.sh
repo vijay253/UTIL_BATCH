@@ -31,17 +31,29 @@ if [[ ${USER} = "cdaq" ]]; then
 fi        
 # Set path depending upon hostname. Change or add more as needed  
 if [[ "${HOSTNAME}" = *"farm"* ]]; then  
+    CentOSVer="$(cat /etc/centos-release)"
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
-	source /site/12gev_phys/softenv.sh 2.1
+	if [[ $CentOSVer = *"7.2"* ]]; then 
+	    source /site/12gev_phys/softenv.sh 2.1
+	elif [[ $CentOSVer = *"7.7"* ]]; then 
+	    source /site/12gev_phys/softenv.sh 2.3
+	    source /apps/root/6.10.02/setroot_CUE.bash
+	fi
     fi
     cd "/group/c-kaonlt/hcana/"
     source "/group/c-kaonlt/hcana/setup.sh"
     cd "$REPLAYPATH"
     source "$REPLAYPATH/setup.sh"
 elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
+    CentOSVer="$(cat /etc/centos-release)"
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
-    source /site/12gev_phys/softenv.sh 2.1
+	if [[ $CentOSVer = *"7.2"* ]]; then 
+	    source /site/12gev_phys/softenv.sh 2.1
+	elif [[ $CentOSVer = *"7.7"* ]]; then 
+	    source /site/12gev_phys/softenv.sh 2.3
+	    source /apps/root/6.10.02/setroot_CUE.bash
+	fi
     cd "/group/c-kaonlt/hcana/"
     source "/group/c-kaonlt/hcana/setup.sh" 
     cd "$REPLAYPATH"
@@ -54,6 +66,9 @@ fi
 cd $REPLAYPATH
 
 ### Run the replay script
-eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/"$OPT"/PRODUCTION/"$OPT"DC_Calib_Check.C($RUNNUMBER,$MAXEVENTS)\""
+eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/CALIBRATION/"$OPT"DC_Calib_Check_Coin.C($RUNNUMBER,$MAXEVENTS)\""
+cd "$REPLAYPATH/CALIBRATION/dc_calib/Calibration_Checker/"
+sleep 10
+root -l -b -q "$REPLAYPATH/CALIBRATION/dc_calib/Calibration_Checker/run_DC_Calib_Comp.C ($RUNNUMBER, $MAXEVENTS, \"$OPT\")"
 
 exit 0
