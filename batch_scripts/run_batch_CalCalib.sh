@@ -63,7 +63,7 @@ while true; do
                 elif [[ $TapeFileSize -ge 45 ]]; then
                     echo "MEMORY: 4000 MB" >> ${batch}
                 fi
-                echo "OS: centos7" >> ${batch}
+                echo "OS: general" >> ${batch}
                 echo "CPU: 1" >> ${batch} ### hcana is single core, setting CPU higher will lower priority and gain you nothing!
 		echo "INPUT_FILES: ${tape_file}" >> ${batch}
                 echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/CalCalib_Batch.sh ${runNum} ${SPEC} ${MAXEVENTS}" >> ${batch}

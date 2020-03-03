@@ -64,7 +64,7 @@ while true; do
                     echo "MEMORY: 4000 MB" >> ${batch}
                 fi
                 #echo "OS: centos7" >> ${batch}
-                echo "OS: general" >> ${batch} # As of 16/1/20 centos 7.2 (which centos7 defaults to) cores being phased out. General will run on first available node (which should speed it up)
+		echo "OS: general" >> ${batch} # As of 16/1/20 centos 7.2 (which centos7 defaults to) cores being phased out. General will run on first available node (which should speed it up)
 		echo "CPU: 1" >> ${batch} ### hcana is single core, setting CPU higher will lower priority and gain you nothing!
 		echo "INPUT_FILES: ${tape_file}" >> ${batch}
                 echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/Batch_Template.sh ${runNum} ${MAXEVENTS}"  >> ${batch} ### Insert your script at end!
