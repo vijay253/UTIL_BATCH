@@ -16,31 +16,18 @@ if [[ $2 -eq "" ]]; then
 fi
 
 # Set path depending upon hostname. Change or add more as needed  
-# Set path depending upon hostname. Change or add more as needed  
 if [[ "${HOSTNAME}" = *"farm"* ]]; then  
-    CentOSVer="$(cat /etc/centos-release)"
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
-	if [[ $CentOSVer = *"7.2"* ]]; then 
-	    source /site/12gev_phys/softenv.sh 2.1
-	elif [[ $CentOSVer = *"7.7"* ]]; then 
-	    source /site/12gev_phys/softenv.sh 2.3
-	    source /apps/root/6.10.02/setroot_CUE.csh
-	fi
+	source /site/12gev_phys/softenv.sh 2.3
     fi
     cd "/group/c-kaonlt/hcana/"
     source "/group/c-kaonlt/hcana/setup.sh"
     cd "$REPLAYPATH"
     source "$REPLAYPATH/setup.sh"
 elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
-    CentOSVer="$(cat /etc/centos-release)"
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
-	if [[ $CentOSVer = *"7.2"* ]]; then 
-	    source /site/12gev_phys/softenv.sh 2.1
-	elif [[ $CentOSVer = *"7.7"* ]]; then 
-	    source /site/12gev_phys/softenv.sh 2.3
-	    source /apps/root/6.10.02/setroot_CUE.csh
-	fi
+    source /site/12gev_phys/softenv.sh 2.3
     cd "/group/c-kaonlt/hcana/"
     source "/group/c-kaonlt/hcana/setup.sh" 
     cd "$REPLAYPATH"
@@ -51,14 +38,31 @@ elif [[ "${HOSTNAME}" = *"phys.uregina.ca"* ]]; then
     REPLAYPATH="/home/${USER}/work/JLab/hallc_replay_lt"
 fi
 cd $REPLAYPATH
+if [ ! -f "$REPLAYPATH/UTIL_PROTON/ROOTfilesProton/coin_replay_scalers_${RUNNUMBER}_150000.root" ]; then
+    eval "$REPLAYPATH/hcana -l -q \"UTIL_PROTON/scripts_Replay/replay_coin_scalers.C($RUNNUMBER,150000)\""
+    cd "$REPLAYPATH/CALIBRATION/bcm_current_map"
+    root -b<<EOF 
+.L ScalerCalib.C+
+.x run.C("${REPLAYPATH}/UTIL_PROTON/ROOTfilesProton/coin_replay_scalers_${RUNNUMBER}_150000.root")
+.q  
+EOF
+    mv bcmcurrent_$RUNNUMBER.param $REPLAYPATH/PARAM/HMS/BCM/CALIB/bcmcurrent_$RUNNUMBER.param
+    cd $REPLAYPATH
+else echo "Scaler replayfile already found for this run in $REPLAYPATH/UTIL_PROTON/ROOTfilesProton/ - Skipping scaler replay step"
+fi
 if [ ! -f "$REPLAYPATH/UTIL_PROTON/ROOTfilesProton/Proton_coin_replay_production_${RUNNUMBER}_${MAXEVENTS}.root" ]; then
-    eval "$REPLAYPATH/hcana -l -q \"UTIL_PROTON/scripts_Replay/replay_production_coin.C($RUNNUMBER,$MAXEVENTS)\"" | tee $REPLAYPATH/UTIL_PROTON/REPORT_OUTPUT/Proton_output_coin_production_${RUNNUMBER}_${MAXEVENTS}.report
+    if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
+	eval "$REPLAYPATH/hcana -l -q \"UTIL_PROTON/scripts_Replay/replay_production_coin.C($RUNNUMBER,$MAXEVENTS)\"" 
+    elif [[ "${HOSTNAME}" == *"ifarm"* ]]; then
+	eval "$REPLAYPATH/hcana -l -q \"UTIL_PROTON/scripts_Replay/replay_production_coin.C($RUNNUMBER,$MAXEVENTS)\""| tee $REPLAYPATH/UTIL_PROTON/REPORT_OUTPUT/Proton_output_coin_production_${RUNNUMBER}_${MAXEVENTS}.report
+    fi
+else echo "Replayfile already found for this run in $REPLAYPATH/UTIL_PROTON/ROOTfilesProton/ - Skipping replay step"
 fi
 sleep 5
-cd "$REPLAYPATH/UTIL_PROTON/scripts_Yield/"
-if [[ ("${HOSTNAME}" = *"farm"* || "${HOSTNAME}" = *"qcd"*) && "${HOSTNAME}" != *"ifarm"* ]]; then
-    root -l -b -q "run_ProtonYield.C($RUNNUMBER,$MAXEVENTS,5,1)"
-else
-    root -l "run_ProtonYield.C($RUNNUMBER,$MAXEVENTS,5,1)"
-fi
+#cd "$REPLAYPATH/UTIL_PROTON/scripts_Yield/"
+#if [[ ("${HOSTNAME}" = *"farm"* || "${HOSTNAME}" = *"qcd"*) && "${HOSTNAME}" != *"ifarm"* ]]; then
+#    root -l -b -q "run_ProtonYield.C($RUNNUMBER,$MAXEVENTS,5,1)"
+#else
+#    root -l "run_ProtonYield.C($RUNNUMBER,$MAXEVENTS,5,1)"
+#fi
 exit 0

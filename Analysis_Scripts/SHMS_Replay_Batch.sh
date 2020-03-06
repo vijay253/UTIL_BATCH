@@ -10,30 +10,19 @@ if [[ $1 -eq "" ]]; then
     exit 2
 fi
 # Set path depending upon hostname. Change or add more as needed  
+# Set path depending upon hostname. Change or add more as needed  
 if [[ "${HOSTNAME}" = *"farm"* ]]; then  
-    CentOSVer="$(cat /etc/centos-release)"
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
-	if [[ $CentOSVer = *"7.2"* ]]; then 
-	    source /site/12gev_phys/softenv.sh 2.1
-	elif [[ $CentOSVer = *"7.7"* ]]; then 
-	    source /site/12gev_phys/softenv.sh 2.3
-	    source /apps/root/6.10.02/setroot_CUE.csh
-	fi
+	source /site/12gev_phys/softenv.sh 2.3
     fi
     cd "/group/c-kaonlt/hcana/"
     source "/group/c-kaonlt/hcana/setup.sh"
     cd "$REPLAYPATH"
     source "$REPLAYPATH/setup.sh"
 elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
-    CentOSVer="$(cat /etc/centos-release)"
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
-	if [[ $CentOSVer = *"7.2"* ]]; then 
-	    source /site/12gev_phys/softenv.sh 2.1
-	elif [[ $CentOSVer = *"7.7"* ]]; then 
-	    source /site/12gev_phys/softenv.sh 2.3
-	    source /apps/root/6.10.02/setroot_CUE.csh
-	fi
+    source /site/12gev_phys/softenv.sh 2.3
     cd "/group/c-kaonlt/hcana/"
     source "/group/c-kaonlt/hcana/setup.sh" 
     cd "$REPLAYPATH"
