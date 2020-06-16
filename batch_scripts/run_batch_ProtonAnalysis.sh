@@ -11,8 +11,8 @@ historyfile=hist.$( date "+%Y-%m-%d_%H-%M-%S" ).log
 ##Output batch script##                                           
 batch="${USER}_Job.txt"
 ##Input run numbers##                                                                        
-inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/Kaon_Data/ProductionLH2_ALL"
-#inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/inputRuns"
+#inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/Kaon_Data/ProductionLH2_ALL"
+inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/inputRuns"
 ## Tape stub                                                                              
 MSSstub='/mss/hallc/spring17/raw/coin_all_%05d.dat'
 auger="augerID.tmp"
