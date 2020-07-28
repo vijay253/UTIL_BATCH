@@ -18,6 +18,7 @@ batch="${USER}_Job.txt"
 
 ##Input run numbers##                                                                      
 ##Point this to the location of your input run list                                            
+#inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/Kaon_Data/ProductionLH2_ALL"
 inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/inputRuns"
 
 ## Tape stub, you can point directly to a taped file and the farm job will do the jgetting for you, don't call it in your script!                                                      
@@ -52,8 +53,8 @@ while true; do
                 cp /dev/null ${batch}
                 ##Creation of batch script for submission##                                                                                                                                                       
                 echo "PROJECT: c-kaonlt" >> ${batch} # Or whatever your project is!
-                #echo "TRACK: analysis" >> ${batch} ## Use this track for production running
-		echo "TRACK: debug" >> ${batch} ### Use this track for testing, higher priority
+		echo "TRACK: analysis" >> ${batch} ## Use this track for production running
+		#echo "TRACK: debug" >> ${batch} ### Use this track for testing, higher priority
                 echo "JOBNAME: KaonLT_${runNum}" >> ${batch} ## Change to be more specific if you want
 		# Request double the tape file size in space, for trunctuated replays edit down as needed
 		# Note, unless this is set typically replays will produce broken root files

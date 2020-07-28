@@ -22,14 +22,12 @@ if [[ "${HOSTNAME}" = *"farm"* ]]; then
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
 	source /site/12gev_phys/softenv.sh 2.3
-	source /apps/root/6.18.04/setroot_CUE.bash
     fi
     cd "$REPLAYPATH"
     source "$REPLAYPATH/setup.sh"
 elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
     source /site/12gev_phys/softenv.sh 2.3
-    source /apps/root/6.18.04/setroot_CUE.bash
     cd "$REPLAYPATH"
     source "$REPLAYPATH/setup.sh" 
 elif [[ "${HOSTNAME}" = *"cdaq"* ]]; then
@@ -62,6 +60,13 @@ if [ ! -f "$REPLAYPATH/UTIL_PROTON/ROOTfilesProton/Proton_coin_replay_production
 else echo "Replayfile already found for this run in $REPLAYPATH/UTIL_PROTON/ROOTfilesProton/ - Skipping replay step"
 fi
 sleep 5
+if [[ "${HOSTNAME}" = *"farm"* ]]; then  
+    if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
+	source /apps/root/6.18.04/setroot_CUE.bash
+    fi
+elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
+    source /apps/root/6.18.04/setroot_CUE.bash
+fi
 cd "$UTILPATH/scripts/kaonyield"
 eval '"Analyse_Kaons.sh" ${RUNNUMBER} ${MAXEVENTS}'
 exit 0
