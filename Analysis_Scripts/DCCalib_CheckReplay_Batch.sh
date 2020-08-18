@@ -30,7 +30,6 @@ if [[ ${USER} = "cdaq" ]]; then
     exit 2
 fi        
 # Set path depending upon hostname. Change or add more as needed  
-# Set path depending upon hostname. Change or add more as needed  
 if [[ "${HOSTNAME}" = *"farm"* ]]; then  
     REPLAYPATH="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt"
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then

@@ -38,7 +38,7 @@ while true; do
                 ##Run number#                                                                                                                                                                                     
                 runNum=$line
                 tape_file=`printf $MSSstub $runNum`
-                TapeFileSize=$(($(sed -n '3 s/^[^=]*= *//p' < $tape_file)/1000000000))
+                TapeFileSize=$(($(sed -n '4 s/^[^=]*= *//p' < $tape_file)/1000000000))
                 if [[ $TapeFileSize == 0 ]];then
                     TapeFileSize=1
                 fi
