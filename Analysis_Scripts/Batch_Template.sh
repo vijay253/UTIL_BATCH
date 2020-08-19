@@ -44,5 +44,5 @@ fi
 cd $REPLAYPATH
 
 echo -e "\n\nStarting Replay Script\n\n"
-eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/replay_production_coin_hElec_pProt.C($RUNNUMBER,$MAXEVENTS)\""
+eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/SHMS/PRODUCTION/replay_production_shms_coin_all.C($RUNNUMBER,$MAXEVENTS)\""
 exit 1
