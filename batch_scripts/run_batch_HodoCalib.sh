@@ -61,7 +61,7 @@ while true; do
                 echo "JOBNAME: KaonLT_HodoCalib_${SPEC}_${runNum}" >> ${batch}
 		echo "DISK_SPACE: 20 GB" >>${batch}                                                                                                                                                             
                 echo "MEMORY: 2500 MB" >> ${batch}
-                echo "OS: centos7" >> ${batch}
+                #echo "OS: centos7" >> ${batch}
                 echo "CPU: 1" >> ${batch} ### hcana single core, setting CPU higher will lower priority!                                                                                                          
 		echo "INPUT_FILES: ${tape_file}" >> ${batch}
 		echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/HodoCalib_Batch.sh ${runNum} ${SPEC} ${MAXEVENTS}" >> ${batch} 

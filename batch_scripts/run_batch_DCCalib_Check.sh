@@ -1,12 +1,9 @@
 #! /bin/bash                                                                                                                                                                                                      
 
-##### A batch submission script by Richard, insert the required script you want to batch run on line 51                                                                                                           
-##### Modify required resources as needed!                                                                                                                                   
-
+##### A batch submission script by Richard, insert the required script you want to batch run on line 51
+##### Modify required resources as needed!
 echo "Running as ${USER}"
-
 SPEC=$1
-
 ### Check you have provided the first argument correctly                                                                                                                                                         
 if [[ ! $1 =~ ^("HMS"|"SHMS")$ ]]; then
     echo "Please specify spectrometer, HMS or SHMS"
@@ -18,21 +15,15 @@ if [[ $2 -eq "" ]]; then
 else
     MAXEVENTS=$2
 fi
-
 ##Output history file##                                                                                                                                                                                           
 historyfile=hist.$( date "+%Y-%m-%d_%H-%M-%S" ).log
-
-##Output batch script##                                                                                                                                                                                           
+##Output batch script##                                                                                                                                                               
 batch="${USER}_Job.txt"
-
 ##Input run numbers##
 inputFile="/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/InputRunLists/inputRuns"
-
 ## Tape stub
 MSSstub='/mss/hallc/spring17/raw/coin_all_%05d.dat'
-
 auger="augerID.tmp"
-
 while true; do
     read -p "Do you wish to begin a new batch submission? (Please answer yes or no) " yn
     case $yn in
@@ -60,7 +51,6 @@ while true; do
                 echo "JOBNAME: KaonLT_DCCalib_${SPEC}_${runNum}" >> ${batch}
 		echo "DISK_SPACE: 20 GB" >>${batch} 
                 echo "MEMORY: 2500 MB" >> ${batch}
-                echo "OS: centos7" >> ${batch}
                 echo "CPU: 1" >> ${batch} ### hcana single core, setting CPU higher will lower priority
 		echo "INPUT_FILES: ${tape_file}" >> ${batch}
 		echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/DCCalib_CheckReplay_Batch.sh ${runNum} ${SPEC} ${MAXEVENTS}" >> ${batch} 

@@ -52,7 +52,7 @@ while true; do
                 elif [[ $TapeFileSize -ge 45 ]]; then
                     echo "MEMORY: 4000 MB" >> ${batch}
                 fi
-		echo "OS: centos7" >> ${batch}
+		#echo "OS: centos7" >> ${batch}
                 echo "CPU: 1" >> ${batch} ### hcana single core, setting CPU higher will lower priority!                                                                                                          
 		echo "INPUT_FILES: ${tape_file}" >> ${batch}
 		echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_PION/HeepCoinYield.sh ${runNum}" >> ${batch} 
