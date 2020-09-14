@@ -55,9 +55,9 @@ fi
 # Run 50k replay for all events in file
 if [ ! -f "$REPLAYPATH/ROOTfiles/coin_replay_Full_${RUNNUMBER}_100000.root" ]; then
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
-	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/FullReplay.C($RUNNUMBER,100000)\"" 
+	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/FullReplay.C($RUNNUMBER,100000)\""
     elif [[ "${HOSTNAME}" == *"ifarm"* ]]; then
-	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/FullReplay.C($RUNNUMBER,100000)\""| tee $REPLAYPATH/REPORT_OUTPUT/Full_replay_output_coin_production_${RUNNUMBER}_100000.report
+	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/FullReplay.C($RUNNUMBER,100000)\""
     fi
 else echo "100k replayfile already found for this run in $REPLAYPATH/ROOTfiles/ - Skipping replay step"
 fi
@@ -67,7 +67,7 @@ if [ ! -f "$REPLAYPATH/ROOTfiles/coin_replay_Full_${RUNNUMBER}_${MAXEVENTS}.root
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
 	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/FullReplay.C($RUNNUMBER,$MAXEVENTS)\"" 
     elif [[ "${HOSTNAME}" == *"ifarm"* ]]; then
-	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/FullReplay.C($RUNNUMBER,$MAXEVENTS)\""| tee $REPLAYPATH/REPORT_OUTPUT/Full_replay_output_coin_production_${RUNNUMBER}_${MAXEVENTS}.report
+	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/FullReplay.C($RUNNUMBER,$MAXEVENTS)\""
     fi
 else echo "All events replayfile already found for this run in $REPLAYPATH/ROOTfiles/ - Skipping replay step"
 fi
