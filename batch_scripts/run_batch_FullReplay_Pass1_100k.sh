@@ -60,17 +60,11 @@ while true; do
                 echo "TRACK: analysis" >> ${batch}
                 echo "JOBNAME: KaonLT_${runNum}" >> ${batch}
                 # Request disk space depending upon raw file size
-                echo "DISK_SPACE: "$(( $TapeFileSize * 3 ))" GB" >> ${batch}
-		if [[ $TapeFileSize -le 45 ]]; then
-		    echo "MEMORY: 4000 MB" >> ${batch}
-		elif [[ $TapeFileSize -ge 45 ]]; then
-		    echo "MEMORY: 6000 MB" >> ${batch}
-		fi
-		#echo "OS: centos7" >> ${batch}
+                echo "DISK_SPACE: "$(( $TapeFileSize ))" GB" >> ${batch}
+		echo "MEMORY: 2500 MB" >> ${batch}
                 echo "CPU: 1" >> ${batch} ### hcana single core, setting CPU higher will lower priority!                                                                                                          
 		echo "INPUT_FILES: ${tape_file}" >> ${batch}
-		#echo "TIME: 1" >> ${batch} 
-		echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/FullReplay_Pass1.sh ${runNum}" >> ${batch}
+		echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/FullReplay_Pass1_100k.sh ${runNum}" >> ${batch}
 		echo "MAIL: ${USER}@jlab.org" >> ${batch}
                 echo "Submitting batch"
                 eval "jsub ${batch} 2>/dev/null"

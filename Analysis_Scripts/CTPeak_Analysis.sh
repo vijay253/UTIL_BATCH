@@ -4,6 +4,7 @@ echo "Starting Replay script"
 echo "I take as arguments the Run Number and max number of events!"
 RUNNUMBER=$1
 MAXEVENTS=-1
+ROOTSTRING="Kaon_coin_replay_production"
 ### Check you've provided the an argument
 if [[ $1 -eq "" ]]; then
     echo "I need a Run Number!"
@@ -37,39 +38,38 @@ elif [[ "${HOSTNAME}" = *"phys.uregina.ca"* ]]; then
 fi
 UTILPATH="${REPLAYPATH}/UTIL_KAONLT"
 cd $REPLAYPATH
-
-# Create and use BCM calib for file if it doesn't exist
-if [ ! -f "$REPLAYPATH/ROOTfiles/coin_replay_scalers_${RUNNUMBER}_150000.root" ]; then
-    eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/SCALERS/replay_coin_scalers.C($RUNNUMBER,150000)\""
+# Note, using the proton replay files is temporary! Need to fix up the replay scripts for KaonLT a little
+# Ideally, you want to do the same thing here though
+if [ ! -f "$REPLAYPATH/UTIL_KAONLT/ROOTfilesKaon/coin_replay_scalers_${RUNNUMBER}_150000.root" ]; then
+    eval "$REPLAYPATH/hcana -l -q \"UTIL_KAONLT/scripts/replay/replay_coin_scalers.C($RUNNUMBER,150000)\""
     cd "$REPLAYPATH/CALIBRATION/bcm_current_map"
     root -b<<EOF 
 .L ScalerCalib.C+
-.x run.C("${REPLAYPATH}/ROOTfiles/coin_replay_scalers_${RUNNUMBER}_150000.root")
+.x run.C("${REPLAYPATH}/UTIL_KAONLT/ROOTfilesKaon/coin_replay_scalers_${RUNNUMBER}_150000.root")
 .q  
 EOF
     mv bcmcurrent_$RUNNUMBER.param $REPLAYPATH/PARAM/HMS/BCM/CALIB/bcmcurrent_$RUNNUMBER.param
     cd $REPLAYPATH
-else echo "Scaler replayfile already found for this run in $REPLAYPATH/ROOTfiles/ - Skipping scaler replay step"
+else echo "Scaler replayfile already found for this run in $REPLAYPATH/UTIL_KAONLT/ROOTfilesKaon/ - Skipping scaler replay step"
 fi
-sleep 30
-# Run 100k replay for all events in file
-if [ ! -f "$REPLAYPATH/ROOTfiles/coin_replay_Full_${RUNNUMBER}_100000.root" ]; then
+if [ ! -f "$REPLAYPATH/UTIL_KAONLT/ROOTfilesKaon/Kaon_coin_replay_production_${RUNNUMBER}_${MAXEVENTS}.root" ]; then
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
-	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/FullReplay.C($RUNNUMBER,100000)\""
+	eval "$REPLAYPATH/hcana -l -q \"UTIL_KAONLT/scripts/replay/replay_production_coin.C($RUNNUMBER,$MAXEVENTS)\"" 
     elif [[ "${HOSTNAME}" == *"ifarm"* ]]; then
-	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/FullReplay.C($RUNNUMBER,100000)\""
+	eval "$REPLAYPATH/hcana -l -q \"UTIL_KAONLT/scripts/replay/replay_production_coin.C($RUNNUMBER,$MAXEVENTS)\""| tee $REPLAYPATH/UTIL_KAONLT/REPORT_OUTPUT/Proton_output_coin_production_${RUNNUMBER}_${MAXEVENTS}.report
     fi
-else echo "100k replayfile already found for this run in $REPLAYPATH/ROOTfiles/ - Skipping replay step"
+else echo "Replayfile already found for this run in $REPLAYPATH/UTIL_PROTON/ROOTfilesKaon/ - Skipping replay step"
 fi
-sleep 30
-# Run full replay for all events in file
-if [ ! -f "$REPLAYPATH/ROOTfiles/coin_replay_Full_${RUNNUMBER}_${MAXEVENTS}.root" ]; then
+sleep 5
+if [[ "${HOSTNAME}" = *"farm"* ]]; then  
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
-	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/FullReplay.C($RUNNUMBER,$MAXEVENTS)\"" 
-    elif [[ "${HOSTNAME}" == *"ifarm"* ]]; then
-	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/FullReplay.C($RUNNUMBER,$MAXEVENTS)\""
+	source /apps/root/6.18.04/setroot_CUE.bash
     fi
-else echo "All events replayfile already found for this run in $REPLAYPATH/ROOTfiles/ - Skipping replay step"
+elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
+    source /apps/root/6.18.04/setroot_CUE.bash
 fi
-sleep 30
+cd "$UTILPATH/scripts/CoinTimePeak"
+if [ ! -f "$UTILPATH/scripts/CoinTimePeak/OUTPUT/${RUNNUMBER}_{MAXEVENTS}_CTPeak_Data.root" ]; then
+    python3 $UTILPATH/scripts/CoinTimePeak/src/CoinTimePeak.py ${ROOTSTRING} ${RUNNUMBER} ${MAXEVENTS} 
+fi
 exit 0
