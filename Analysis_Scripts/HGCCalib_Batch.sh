@@ -10,6 +10,7 @@ RUNNUMBER=$1
 ### Note - Due to the way the HGC calibration script works, it may need to chain runs together
 ### This script just processes a single run, users can chain together consecutive runs if they like, instructions on how to do this are printed
 ### after running the batch job submission script
+### This script might be slightly redundant once the new calibration script suite is established
 ### Check you've provided the an argument
 if [[ $1 -eq "" ]]; then
     echo "I need a Run Number!"
@@ -64,7 +65,7 @@ EOF
 else echo "Scaler replayfile already found for this run in $REPLAYPATH/ROOTfiles/ - Skipping scaler replay step"
 fi
 sleep 15
-#if [ ! -f "$REPLAYPATH/ROOTfiles/coin_replay_production_${RUNNUMBER}_${MAXEVENTS}.root" ]; then
+# Should use a slimmer replay script in future (def files here need slimming down)
 if [ ! -f "$REPLAYPATH/ROOTfilesHGC/coin_replay_production_${RUNNUMBER}_${MAXEVENTS}.root" ]; then
     if [[ "${HOSTNAME}" != *"ifarm"* ]]; then
 	eval "$REPLAYPATH/hcana -l -q \"SCRIPTS/COIN/PRODUCTION/replay_production_coin_KLT.C($RUNNUMBER,$MAXEVENTS)\"" 
