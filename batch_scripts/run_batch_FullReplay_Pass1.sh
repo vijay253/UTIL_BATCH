@@ -1,6 +1,9 @@
 #! /bin/bash
 
-##### A batch submission script by Richard
+### Stephen Kay, University of Regina
+### Last modified - 15/01/21
+### stephen.kay@uregina.ca
+### A batch submission script based on an earlier version by Richard
 
 echo "Running as ${USER}"
 
@@ -50,12 +53,12 @@ while true; do
                 fi
 		echo "Raw .dat file is "$TapeFileSize" GB"
 		tmp=tmp
-                ##Finds number of lines of input file##                                                                                                                                                           
+                ##Finds number of lines of input file
                 numlines=$(eval "wc -l < ${inputFile}")
                 echo "Job $(( $i + 2 ))/$(( $numlines +1 ))"
                 echo "Running ${batch} for ${runNum}"
                 cp /dev/null ${batch}
-                ##Creation of batch script for submission##                                                                                                                                                       
+                ##Creation of batch script for submission##
                 echo "PROJECT: c-kaonlt" >> ${batch}
                 echo "TRACK: analysis" >> ${batch}
                 echo "JOBNAME: KaonLT_${runNum}" >> ${batch}
@@ -67,7 +70,7 @@ while true; do
 		    echo "MEMORY: 6000 MB" >> ${batch}
 		fi
 		#echo "OS: centos7" >> ${batch}
-                echo "CPU: 1" >> ${batch} ### hcana single core, setting CPU higher will lower priority!                                                                                                          
+                echo "CPU: 1" >> ${batch} ### hcana single core, setting CPU higher will lower priority!              
 		echo "INPUT_FILES: ${tape_file}" >> ${batch}
 		#echo "TIME: 1" >> ${batch} 
 		echo "COMMAND:/group/c-kaonlt/USERS/${USER}/hallc_replay_lt/UTIL_BATCH/Analysis_Scripts/FullReplay_Pass1.sh ${runNum}" >> ${batch}

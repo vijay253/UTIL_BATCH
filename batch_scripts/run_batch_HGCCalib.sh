@@ -33,6 +33,7 @@ MSSstub='/mss/hallc/spring17/raw/coin_all_%05d.dat'
 
 auger="augerID.tmp"
 echo "Note, this script only processes calibration for a single run at a time, you may need to manually run the HGC script with a set of run numbers for better results"
+echo "See hallc_replay_lt/CALIBRATION/shms_hgcer_calib/README.md for instructions on how to chain runs together with the calibration script"
 
 while true; do
     read -p "Do you wish to begin a new batch submission? (Please answer yes or no) " yn
