@@ -1,4 +1,4 @@
-#!/bin/bash
+\#!/bin/bash
 
 echo "Starting Replay script"
 echo "I take as arguments the Run Number and max number of events!"
@@ -68,5 +68,6 @@ elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
     source /apps/root/6.18.04/setroot_CUE.bash
 fi
 cd "$UTILPATH/scripts/kaonyield"
-eval '"Analyse_Kaons.sh" ${RUNNUMBER} ${MAXEVENTS}'
+## The line below needs tweaking with the run prefix!
+eval '"Analyse_Kaons.sh" Proton_coin_replay_production ${RUNNUMBER} ${MAXEVENTS}'
 exit 0

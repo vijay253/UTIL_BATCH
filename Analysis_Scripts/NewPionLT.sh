@@ -71,5 +71,5 @@ elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
     source /apps/root/6.18.04/setroot_CUE.bash
 fi
 cd "$UTILPATH/scripts/pionyield"
-eval '"Analyse_Pions.sh" ${RUNNUMBER} ${MAXEVENTS}'
+eval '"Analyse_Pions.sh" Pion_coin_replay_production ${RUNNUMBER} ${MAXEVENTS}'
 exit 0
