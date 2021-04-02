@@ -66,5 +66,7 @@ elif [[ "${HOSTNAME}" = *"qcd"* ]]; then
     source /apps/root/6.18.04/setroot_CUE.bash
 fi
 cd "$UTILPATH/scripts/protonyield"
-eval '"Analyse_Protons.sh" ${RUNNUMBER} ${MAXEVENTS}'
+## The line below needs tweaking with the run prefix!
+eval '"Analyse_Protons.sh" Proton_coin_replay_production ${RUNNUMBER} ${MAXEVENTS}'
 exit 0
+/

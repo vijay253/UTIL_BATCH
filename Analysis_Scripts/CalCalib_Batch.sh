@@ -83,11 +83,11 @@ if [ $OPT == "HMS" ]; then
     if [ "$RUNNUMBER" -le 8375 ]; then 
 	# Find and obtain the calibration used in the replay, assuming it follows one of two patterns
 	CALIBFILE=$(grep -o "PARAM/HMS/CAL/hcal_.*" "Tmp_"$RUNNUMBER"_"$OPT".txt")
-	CALIBFILE=$(grep -o "PARAM/HMS/CAL/CALIB/hcal_.*" "Tmp_"$RUNNUMBER"_"$OPT".txt")
+	CALIBFILE=$(grep -o "PARAM/HMS/CAL/CALIB/hcal_"$RUNNUMBER".*" "Tmp_"$RUNNUMBER"_"$OPT".txt")
     fi
     if [ "$RUNNUMBER" -ge 8376 ]; then
 	CALIBFILE=$(grep -o "PARAM/HMS/CAL/new_hcal.*" "Tmp_"$RUNNUMBER"_"$OPT".txt")
-	CALIBFILE=$(grep -o "PARAM/HMS/CAL/CALIB/hcal_.*" "Tmp_"$RUNNUMBER"_"$OPT".txt")
+	CALIBFILE=$(grep -o "PARAM/HMS/CAL/CALIB/hcal_"$RUNNUMBER".*" "Tmp_"$RUNNUMBER"_"$OPT".txt")
     fi
 fi
 if [ $OPT == "SHMS" ]; then
